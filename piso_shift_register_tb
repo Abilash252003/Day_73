@@ -1,0 +1,55 @@
+///100 Days of RTL///
+
+///Abilash P///
+
+///	PISO shift register///
+
+module piso_tb ();
+  reg CLK, clear, load;
+  reg [3:0]pi;
+  wire so;
+  wire [3:0]temp;
+  
+  piso DUT(.CLK(CLK), .clear(clear), .load(load), .pi(pi), .so(so), .temp(temp));
+  
+  initial 
+    begin
+      CLK=1;
+      forever #5 CLK = ~CLK;  
+    end 
+  
+  initial
+    begin
+      load  = 1'b1;
+      clear = 1'b1;
+      #10;
+      clear = 1'b0;
+      load  = 1'b1;
+      pi    = 4'b1001;
+      #10;
+      load  = 1'b0;
+      #50;
+      
+      clear = 1'b1;
+      #10;
+      clear = 1'b0;
+      load  = 1'b1;
+      pi    = 4'b1101;
+      #10;
+      load  = 1'b0;
+      #50;
+      $finish;
+    end
+   
+  initial
+     begin
+       $dumpfile("dump.vcd");
+       $dumpvars(1);
+     end
+  
+  initial
+    $monitor("simtime = %g, CLK = %b, clear = %b, temp = %b, so = %b", $time, CLK, clear, temp, so);
+  
+endmodule
+  
+      
